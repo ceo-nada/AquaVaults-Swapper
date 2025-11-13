@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>AquaVaults Swapper</title>
-  <script src="https://unpkg.com/@solana/web3.js@1.95.1/lib/index.iife.min.js"></script>
+  <!-- <script src="https://unpkg.com/@solana/web3.js@1.95.1/lib/index.iife.min.js"></script> -->
+  <script src="vendor/solana-web3.iife.min.js"></script>
+  <!-- Load your injected config (from serve.py) -->
+  <script src="config.js"></script>
   <style>
     body { font-family: sans-serif; background: #0b0e11; color: #eaeaea; text-align: center; padding: 2rem; }
     input, select, button { margin: 0.5rem; padding: 0.6rem; font-size: 1rem; border-radius: 8px; border: none; }
@@ -226,7 +229,6 @@
       </label>
     </div>
   </div>
-
   <script>
     // Pond0x Token Vaults (Original)
     const TOKEN_VAULTS_AFFILIATE_1 = {
@@ -261,7 +263,9 @@
     };
 
     const REFERRAL_PROGRAM_ID = "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4";
-    const DEFAULT_RPC = "https://api.mainnet-beta.solana.com";
+    //const DEFAULT_RPC = "https://api.mainnet-beta.solana.com";
+    const DEFAULT_RPC = window.APP_CONFIG?.DEFAULT_RPC || "https://api.mainnet-beta.solana.com";
+    console.log("Default RPC set to:", DEFAULT_RPC)
     
     let connection = null;
     let currentRpcUrl = null;
