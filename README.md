@@ -74,7 +74,8 @@ _Optional_: Create a virtual environment (venv) for this project, which will ena
  2.  Activate a venv in the new folder (see tip below)
  3.  Make copies of env-example.txt and config-example.js. 
  4.  Rename the copies to ".env" (with no file extension) and "config.js"
- 5.  Remove the comments and update the values in .env to your desired port and Default RPC_URL
+ 5.  Remove the comments and update the values in .env to your desired port.
+ 6.  In config.js, Replace {{RPC_URL}} with your preferred RPC URL. 
  6.  Install dependencies listed in requirements.txt to your venv: 
         Windows: `py -m pip install -r requirements.txt`
         Mac: `python3 -m pip install -r requirements.txt`

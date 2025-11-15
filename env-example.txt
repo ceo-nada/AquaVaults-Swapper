@@ -1,4 +1,3 @@
-# example of the .env file used to define your preferred RPC URL, local port, and more. 
+# example of the .env file used to define your preferred local port and probably more in the future 
 
-RPC_URL="https://your-solana-rpc-url"
 LOCAL_PORT=1000

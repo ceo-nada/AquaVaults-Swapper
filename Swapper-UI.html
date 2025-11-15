@@ -552,11 +552,29 @@
       updateSlippageDisplay(slippageBps); getEstimate();
     };
 
+    // Legacy debugLog definition
     const debugLog = msg => {
       const d = document.getElementById("debug");
       d.style.display = "block"; const t = new Date().toLocaleTimeString();
       d.innerHTML += `<div>[${t}] ${msg}</div>`; console.log(`[${t}]`, msg);
+    
+      //};
+    // Enhanced debugLog which will pipe the logs to Flask
+    // const debugLog = msg => {
+    //   const d = document.getElementById("debug");
+    //   d.style.display = "block";
+    //   const t = new Date().toLocaleTimeString();
+    //   d.innerHTML += `<div>[${t}] ${msg}</div>`;
+    //   console.log(`[${t}]`, msg);
+
+    // Pipe debugLog items to Flask
+      fetch("http://localhost:5555/ui-log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg, timestamp: t })
+      }).catch(() => { /* ignore log failures */ });
     };
+
 
     async function connectWallet() {
       if (!rpcConfigured) {
@@ -734,8 +752,23 @@
         );
 
         document.getElementById("status").innerHTML = `<span class="pending">⏳ Please approve transaction in wallet...</span>`;
-        const signedTx = await window.solana.signTransaction(tx);
 
+        // Trigger local bridge to start click automation (non-blocking)
+        try {
+          await fetch(window.APP_CONFIG.LOCAL_BRIDGE_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ delay: 0.25 })
+          });
+          console.log("Bridge notified: waiting 0.5s before click");
+        } catch (err) {
+          console.warn("Bridge not available:", err.message);
+        }
+
+        // Wait for wallet signature
+        const signedTx = await window.solana.signTransaction(tx);
+        
+        // Send the transaction
         document.getElementById("status").innerHTML = `<span class="pending">⏳ Sending transaction...</span>`;
         const sig = await connection.sendRawTransaction(signedTx.serialize());
         
