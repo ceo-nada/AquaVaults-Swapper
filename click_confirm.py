@@ -64,9 +64,9 @@ MAX_REFRESH_ATTEMPTS = 5
 
 
 #image assets
-CONFIRM_IMAGES = [image("phantom_confirm.png"), image("phantom_confirm.png")]
-PHANTOM_ERROR_IMAGES = [image("phantom_slippage.png"), image("ur_broke.png"), image("phantom_simulation.png")]
-PHANTOM_CANCEL_IMAGES = [image("phantom_cancel.png"),image("phantom_cancel2.png")]
+CONFIRM_IMAGES = [image("phantom_confirm.png"), image("phantom_confirm2.png")]
+PHANTOM_ERROR_IMAGES = [image("phantom_slippage.png"), image("ur_broke.png"), image("phantom_simulation.png"), image("phantom_blocked.png")]
+PHANTOM_CANCEL_IMAGES = [image("phantom_cancel.png"),image("phantom_close.png"),image("phantom_cancel2.png")]
 PHANTOM_UNLOCK = image("extension_unlock.png")
 
 # =========================
@@ -428,8 +428,8 @@ class SwapFlow:
                     )
 
                     if disappeared:
-                        Logger.info(f"Phantom error: Canceled tx. Attempting swap in {SLEEP_TIME} seconds.")
-                        time.sleep(SLEEP_TIME)
+                        Logger.info(f"Phantom error: Canceled tx.")
+                        #time.sleep(STEP_DELAY)
                         return True
                     else:
                         #error screen still there
