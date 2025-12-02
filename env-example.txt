@@ -1,0 +1,14 @@
+# example of the .env file used to define your preferred local port and probably more in the future 
+
+RPC_URL="https://your-custom-rpc-url"
+LOCAL_PORT=8000
+LOCAL_BRIDGE_URL="http://localhost:5555/trigger-click"
+
+FILE_PATH_1_KEYWORD="porktard" #use the OS username or some other unique value
+FILE_PATH_1="./images/porktard" #enter the path to the subfolder containing the images for this system
+
+FILE_PATH_2_KEYWORD="snowflake"
+FILE_PATH_2="./images/snowflake"
+
+FILE_PATH_3_KEYWORD="phunkster"
+FILE_PATH_3="./images/phunkster"
