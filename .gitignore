@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .venv/
 .DS_Store
 .env
@@ -7,3 +8,7 @@ config.js
 images/T_images/
 images/W_images/
 images/wu_images/
+=======
+.env
+config.js
+>>>>>>> Stashed changes
