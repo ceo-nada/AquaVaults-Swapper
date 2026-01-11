@@ -53,7 +53,7 @@ def kill_switch_active():
 #TIME_BETWEEN_SWAPS = 25 #seconds, minimum time between swaps
 #VARIANCE_TIME = 55 #seconds, used to extend and randomize time between swaps
 INTERVAL = 0.15 #seconds, used to time keystrokes
-STEP_DELAY = 1.5 #seconds, used to add time between actions
+STEP_DELAY = 0.75 #seconds, used to add time between actions
 SLEEP_TIME = 20 #seconds, used to pause between certain steps
 TIMEOUT = 10  #seconds, used to time out page loads and such
 MAX_ATTEMPTS = 15
