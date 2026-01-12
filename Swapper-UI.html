@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <title>AquaVaults Swapper</title>
-  <script src="https://unpkg.com/@solana/web3.js@1.95.1/lib/index.iife.min.js"></script>
+  <!-- uncomment the line below to pull the script direct from the source -->
+  <!-- <script src="https://unpkg.com/@solana/web3.js@1.95.1/lib/index.iife.min.js"></script> -->
+
+
+  <!-- uncomment the line below to use a local copy of the above script
+  you'll need to dowload and save the script 
+  you may also need to adjust the file path -->
+  <script src="vendor/solana-web3.iife.min.js"></script>
+
+  <!-- Load your injected config (from serve.py) -->
+
+  <script src="config.js"></script>
   <style>
     body { font-family: sans-serif; background: #0b0e11; color: #eaeaea; text-align: center; padding: 2rem; }
     input, select, button { margin: 0.5rem; padding: 0.6rem; font-size: 1rem; border-radius: 8px; border: none; }
@@ -297,7 +308,13 @@
     const REFERRAL_PROGRAM_ID = "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4";
     const DEFAULT_RPC = "https://api.mainnet-beta.solana.com";
     const JUPITER_API_BASE = "https://api.jup.ag"; // NEW: Updated from lite-api.jup.ag
-    
+
+
+    // custom RPC configuration additions
+    const DEFAULT_RPC = window.APP_CONFIG?.DEFAULT_RPC || "https://api.mainnet-beta.solana.com";
+    console.log("Default RPC set to:", DEFAULT_RPC)
+
+
     let connection = null;
     let currentRpcUrl = null;
     let rpcConfigured = false;
@@ -663,11 +680,41 @@
       updateSlippageDisplay(slippageBps); getEstimate();
     };
 
+
+    // Legacy debugLog definition
     const debugLog = msg => {
       const d = document.getElementById("debug");
       d.style.display = "block"; const t = new Date().toLocaleTimeString();
       d.innerHTML += `<div>[${t}] ${msg}</div>`; console.log(`[${t}]`, msg);
     };
+
+    // Enhanced debugLog which will pipe the logs to Flask
+
+    // const debugLog = msg => {
+
+    //   const d = document.getElementById("debug");
+
+    //   d.style.display = "block";
+
+    //   const t = new Date().toLocaleTimeString();
+
+    //   d.innerHTML += `<div>[${t}] ${msg}</div>`;
+
+    //   console.log(`[${t}]`, msg);
+
+
+
+    // Pipe debugLog items to Flask
+
+      fetch("http://localhost:5555/ui-log", {
+
+        method: "POST",
+
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({ message: msg, timestamp: t })
+
+      }).catch(() => { /* ignore log failures */ });
 
     async function connectWallet() {
       if (!apiKeyConfigured) {
@@ -871,8 +918,32 @@
         );
 
         document.getElementById("status").innerHTML = `<span class="pending">⏳ Please approve transaction in wallet...</span>`;
+        
+
+
+
+        // Trigger local bridge to start click automation (non-blocking)
+        try {
+          await fetch(window.APP_CONFIG.LOCAL_BRIDGE_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ delay: 0.15 })
+          });
+
+          console.log("Bridge notified: watching for phantom confirm button");
+
+        } catch (err) {
+
+          console.warn("Bridge not available:", err.message);
+
+        }
+
+
+
+        // Wait for wallet signature
         const signedTx = await window.solana.signTransaction(tx);
 
+        // Send the transaction
         document.getElementById("status").innerHTML = `<span class="pending">⏳ Sending transaction...</span>`;
         const sig = await connection.sendRawTransaction(signedTx.serialize());
         

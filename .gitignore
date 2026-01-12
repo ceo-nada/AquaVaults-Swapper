@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 
+=======
+<<<<<<< Updated upstream
+>>>>>>> main
 .venv/
 .DS_Store
 .env
@@ -8,6 +12,13 @@ config.js
 images/T_images/
 images/W_images/
 images/wu_images/
+<<<<<<< HEAD
 .env
 config.js
 
+=======
+=======
+.env
+config.js
+>>>>>>> Stashed changes
+>>>>>>> main
