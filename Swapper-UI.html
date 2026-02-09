@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <title>AquaVaults Swapper</title>
   <!-- uncomment the line below to pull the script direct from the source -->
-  <!-- <script src="https://unpkg.com/@solana/web3.js@1.95.1/lib/index.iife.min.js"></script> -->
+  <script src="https://unpkg.com/@solana/web3.js@1.95.1/lib/index.iife.min.js"></script>
 
 
   <!-- uncomment the line below to use a local copy of the above script
   you'll need to dowload and save the script 
   you may also need to adjust the file path -->
-  <script src="vendor/solana-web3.iife.min.js"></script>
+ <!-- <script src="vendor/solana-web3.iife.min.js"></script>-->
 
   <!-- Load your injected config (from serve.py) -->
 
@@ -306,7 +306,7 @@
     };
 
     const REFERRAL_PROGRAM_ID = "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4";
-    const DEFAULT_RPC = "https://api.mainnet-beta.solana.com";
+    // const DEFAULT_RPC = "https://api.mainnet-beta.solana.com";
     const JUPITER_API_BASE = "https://api.jup.ag"; // NEW: Updated from lite-api.jup.ag
 
 
@@ -681,40 +681,28 @@
     };
 
 
-    // Legacy debugLog definition
-    const debugLog = msg => {
-      const d = document.getElementById("debug");
-      d.style.display = "block"; const t = new Date().toLocaleTimeString();
-      d.innerHTML += `<div>[${t}] ${msg}</div>`; console.log(`[${t}]`, msg);
-    };
-
-    // Enhanced debugLog which will pipe the logs to Flask
-
+    // // Legacy debugLog definition
     // const debugLog = msg => {
-
     //   const d = document.getElementById("debug");
-
-    //   d.style.display = "block";
-
-    //   const t = new Date().toLocaleTimeString();
-
-    //   d.innerHTML += `<div>[${t}] ${msg}</div>`;
-
-    //   console.log(`[${t}]`, msg);
-
-
-
-    // Pipe debugLog items to Flask
+    //   d.style.display = "block"; const t = new Date().toLocaleTimeString();
+    //   d.innerHTML += `<div>[${t}] ${msg}</div>`; console.log(`[${t}]`, msg);
+    // };
+    
+    // debugLog (UI + console + Flask)
+    const debugLog = (msg) => {
+      const d = document.getElementById("debug");
+      d.style.display = "block";
+      const t = new Date().toLocaleTimeString();
+      d.innerHTML += `<div>[${t}] ${msg}</div>`;
+      console.log(`[${t}]`, msg);
 
       fetch("http://localhost:5555/ui-log", {
-
         method: "POST",
-
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg, timestamp: t }),
+      }).catch(() => {});
+    };
 
-        body: JSON.stringify({ message: msg, timestamp: t })
-
-      }).catch(() => { /* ignore log failures */ });
 
     async function connectWallet() {
       if (!apiKeyConfigured) {
